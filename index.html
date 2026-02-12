@@ -3,163 +3,54 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5" />
-  <title>辰發企業 · 晶碩大溪純水系統專案管理</title>
-  <!-- Tailwind CSS via CDN (輕量極簡) -->
+  <title>辰發企業 · 晶碩大溪純水專案 · 極簡管理儀表板</title>
+  <!-- Tailwind CSS via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- 自訂極簡主義配色：深藍主軸、灰白層次 -->
+  <!-- 自訂字體: Inter 極簡風格 -->
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
     * { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
-    body { background-color: #f6f8fa; }  /* 淺灰背景 */
-    .dashboard-card { background: white; border-radius: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.02); border: 1px solid #eef2f6; }
-    .gantt-bar { height: 0.75rem; border-radius: 9999px; background: #e6edf4; overflow: hidden; }
-    .gantt-progress { height: 100%; background: #0b4f6c; border-radius: 9999px; } /* 深藍代表進度 */
-    .status-pass { background-color: #dcfce7; color: #15803d; padding: 0.2rem 0.6rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; }
-    .status-fail { background-color: #fee2e2; color: #b91c1c; padding: 0.2rem 0.6rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; }
-    .status-pending { background-color: #fff3cd; color: #856404; padding: 0.2rem 0.6rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; }
-    .table-header { background-color: #f0f4f8; color: #1a2e3b; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.03em; }
-    .fat-tag { background-color: #0b4f6c; color: white; font-size: 0.7rem; padding: 0.15rem 0.6rem; border-radius: 12px; font-weight: 600; }
-    .event-log-highlight { border-left: 4px solid #0b4f6c; background-color: #f9fcff; }
-    /* 甘特圖視覺簡約 */
-    .milestone-marker { display: flex; align-items: center; gap: 0.5rem; }
-    .timeline-grid { display: grid; grid-template-columns: 120px 1fr; align-items: center; gap: 0.75rem; }
+    body { background-color: #f7f9fc; }
+    .dashboard-card { background: white; border-radius: 1.2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.02); border: 1px solid #edf2f7; }
+    .gantt-bar { height: 0.7rem; border-radius: 9999px; background: #e9eef3; overflow: hidden; }
+    .gantt-progress { height: 100%; background: #0b4f6c; border-radius: 9999px; }
+    .status-pending { background-color: #f3f6f9; color: #4a5c6a; padding: 0.2rem 0.8rem; border-radius: 9999px; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.02em; border: 1px solid #d2dce5; }
+    .table-header { background-color: #f2f6fa; color: #1e3a4b; font-weight: 600; font-size: 0.75rem; text-transform: uppercase; }
+    .milestone-grid { display: grid; grid-template-columns: 130px 1fr; align-items: center; gap: 0.8rem; }
+    /* 任務層級縮排 */
+    .level-0 { font-weight: 600; background-color: #fafcfd; border-bottom: 1px solid #edf2f7; }
+    .level-1 { padding-left: 1.8rem !important; font-weight: 400; }
+    .level-2 { padding-left: 3.5rem !important; font-weight: 400; color: #3f5463; font-size: 0.78rem; }
+    .event-highlight { border-left: 4px solid #0b4f6c; background-color: #f8fbfe; }
+    .fat-tag-hidden { display: none; } /* 完全隱藏FAT標籤 */
   </style>
-  <!-- Font Awesome 6 (免費icon) -->
+  <!-- Font Awesome 6 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body class="antialiased p-4 md:p-6 text-gray-700">
 
-  <!-- ========== 主要容器 ========== -->
+  <!-- 主要容器 -->
   <div class="max-w-7xl mx-auto space-y-6">
-    
-    <!-- ---- 標題區域 + 專案識別 ---- -->
+
+    <!-- ===== 標題列 ===== -->
     <div class="dashboard-card px-6 py-5 flex flex-col md:flex-row md:items-center justify-between">
       <div class="flex items-center gap-3">
-        <div class="h-10 w-10 bg-[#0b4f6c] rounded-lg flex items-center justify-center text-white text-xl"><i class="fas fa-droplet"></i></div>
+        <div class="h-10 w-10 bg-[#0b4f6c] rounded-xl flex items-center justify-center text-white text-xl"><i class="fas fa-droplet"></i></div>
         <div>
-          <h1 class="text-xl font-bold text-[#0a3b4a] tracking-tight">晶碩大溪廠 · 10CMH純水系統 (二期)</h1>
-          <p class="text-sm text-gray-500 mt-0.5">辰發企業 統包工程 · 專案管理儀表板</p>
+          <h1 class="text-xl font-bold text-[#0b3b4a] tracking-tight">晶碩大溪廠 · 10CMH純水二期</h1>
+          <p class="text-sm text-gray-500 mt-0.5">辰發企業 統包工程 · 專案管理儀表板 (EPC)</p>
         </div>
       </div>
-      <div class="mt-3 md:mt-0 flex items-center gap-4 text-sm">
-        <span class="px-3 py-1.5 bg-[#eef2f6] text-[#0b4f6c] rounded-lg font-medium"><i class="far fa-calendar-alt mr-1"></i> 目前: 2026-02-12</span>
-        <span class="px-3 py-1.5 bg-[#0b4f6c] text-white rounded-lg font-medium shadow-sm">得標通知 2026-02-06</span>
+      <div class="mt-3 md:mt-0 flex items-center gap-3 text-sm">
+        <span class="px-3 py-1.5 bg-[#e9f0f5] text-[#0b4f6c] rounded-lg font-medium"><i class="far fa-calendar-alt mr-1"></i> 今日: 2026-02-12</span>
+        <span class="px-3 py-1.5 bg-[#0b4f6c] text-white rounded-lg shadow-sm">得標 2026-02-06</span>
       </div>
     </div>
 
-    <!-- ========== Mock JSON DATA (隱藏式，符合需求) ========== -->
-    <script id="mockProjectData" type="application/json">
-      {
-        "projectName": "晶碩大溪10CMH純水二期",
-        "dashboard": {
-          "totalProgress": 8,
-          "remainingDays": 105,
-          "currentPhase": "細部設計 / 採購前置",
-          "milestoneStatus": "設計進行中"
-        },
-        "waterSpecs": [
-          { "parameter": "導電度 (一級RO產水)", "unit": "µS/cm", "requirement": "≤ 10", "actual": "8.2", "status": "PASS" },
-          { "parameter": "導電度 (二級RO產水)", "unit": "µS/cm", "requirement": "≤ 5", "actual": "3.6", "status": "PASS" },
-          { "parameter": "導電度 (拋光樹脂出口)", "unit": "µS/cm", "requirement": "≤ 0.1", "actual": "0.08", "status": "PASS" },
-          { "parameter": "TSS (二級RO)", "unit": "ppm", "requirement": "≤ 0.5", "actual": "0.2", "status": "PASS" },
-          { "parameter": "TSS (UPW)", "unit": "ppm", "requirement": "≤ 0.1", "actual": "0.06", "status": "PASS" },
-          { "parameter": "pH (一級RO)", "unit": "-", "requirement": "6.0-8.0", "actual": "7.1", "status": "PASS" },
-          { "parameter": "pH (UPW)", "unit": "-", "requirement": "6.5-7.5", "actual": "7.0", "status": "PASS" },
-          { "parameter": "TOC (UPW)", "unit": "ppb", "requirement": "< 50", "actual": "32", "status": "PASS" },
-          { "parameter": "濁度 (原水)", "unit": "NTU", "requirement": "< 5", "actual": "2.1", "status": "PASS" },
-          { "parameter": "殘留氯 (活性碳後)", "unit": "ppm", "requirement": "< 0.1", "actual": "0.02", "status": "PASS" }
-        ],
-        "milestones": [
-          { "name": "設計階段", "start": "2026-02-09", "end": "2026-04-15", "progress": 15 },
-          { "name": "採購與預製", "start": "2026-02-09", "end": "2026-04-24", "progress": 8 },
-          { "name": "盤體組裝/Skid", "start": "2026-03-09", "end": "2026-04-20", "progress": 0 },
-          { "name": "FAT 廠驗", "start": "2026-05-05", "end": "2026-05-21", "progress": 0 },
-          { "name": "現場安裝/配管", "start": "2026-03-11", "end": "2026-05-07", "progress": 2 },
-          { "name": "試車/確校", "start": "2026-04-17", "end": "2026-05-28", "progress": 0 }
-        ],
-        "eventLogs": [
-          { "date": "2026-02-04", "category": "投標", "description": "10CMH純水系統二期投標文件提交", "progress": "完成" },
-          { "date": "2026-02-06", "category": "得標", "description": "辰發企業正式得標通知", "progress": "完成" },
-          { "date": "2026-02-09", "category": "會議紀錄", "description": "內部專案啟動會議，核定WBS與負責人", "progress": "完成" },
-          { "date": "2026-02-10", "category": "設計變更", "description": "提交第一版平面配置圖，業主反饋調整管架", "progress": "進行中" },
-          { "date": "2026-02-11", "category": "廠勘", "description": "現場會勘，確認基座位置及圍堰範圍", "progress": "完成" },
-          { "date": "2026-02-12", "category": "FAT 缺失改善", "description": "【追蹤】龜山廠FAT經驗回饋：RO膜外殼壓力錶規格更新", "progress": "待採購" }
-        ],
-        "detailTasks": [
-          {"task":"細部設計規畫及圖面製作","workdays":40,"start":"2026-02-09","end":"2026-04-15","progress":5},
-          {"task":"PID圖製作","workdays":3,"start":"2026-02-09","end":"2026-02-11","progress":100},
-          {"task":"配置圖製作","workdays":18,"start":"2026-02-09","end":"2026-03-12","progress":15},
-          {"task":"設備清單製作","workdays":18,"start":"2026-02-09","end":"2026-03-12","progress":15},
-          {"task":"儀表清單製作","workdays":18,"start":"2026-02-09","end":"2026-03-12","progress":15},
-          {"task":"閥件清單製作","workdays":18,"start":"2026-02-09","end":"2026-03-12","progress":15},
-          {"task":"管線清單製作","workdays":18,"start":"2026-02-09","end":"2026-03-12","progress":15},
-          {"task":"I/O List製作","workdays":28,"start":"2026-02-09","end":"2026-03-26","progress":8},
-          {"task":"設備型錄及製作詳圖","workdays":28,"start":"2026-02-09","end":"2026-03-26","progress":8},
-          {"task":"儀表型錄圖面","workdays":18,"start":"2026-02-09","end":"2026-03-12","progress":15},
-          {"task":"閥件型錄圖面","workdays":18,"start":"2026-02-09","end":"2026-03-12","progress":15},
-          {"task":"配管及另料型錄圖面","workdays":18,"start":"2026-02-09","end":"2026-03-12","progress":15},
-          {"task":"盤櫃圖製作","workdays":25,"start":"2026-02-09","end":"2026-03-23","progress":10},
-          {"task":"電路圖製作(含配線圖)","workdays":25,"start":"2026-02-09","end":"2026-03-23","progress":10},
-          {"task":"控制邏輯圖製作(含I/O List)","workdays":22,"start":"2026-03-04","end":"2026-04-02","progress":0},
-          {"task":"HMI人機畫面製作","workdays":27,"start":"2026-03-06","end":"2026-04-15","progress":0},
-          {"task":"設備採購及組裝預製","workdays":43,"start":"2026-02-09","end":"2026-04-20","progress":3},
-          {"task":"定位點及基座、防溢工程","workdays":8,"start":"2026-03-04","end":"2026-03-13","progress":0},
-          {"task":"泵浦採購","workdays":3,"start":"2026-02-09","end":"2026-02-11","progress":100},
-          {"task":"泵浦Skid組立預製","workdays":7,"start":"2026-02-09","end":"2026-02-24","progress":30},
-          {"task":"RO (含外管)及SKID採購及製作","workdays":23,"start":"2026-03-09","end":"2026-04-10","progress":0},
-          {"task":"FRP桶槽製作","workdays":40,"start":"2026-02-13","end":"2026-04-21","progress":2},
-          {"task":"UV採購及派送","workdays":47,"start":"2026-02-09","end":"2026-04-24","progress":2},
-          {"task":"濾料採購及相關準備","workdays":37,"start":"2026-02-12","end":"2026-04-15","progress":1},
-          {"task":"儀表及管材採購","workdays":16,"start":"2026-03-16","end":"2026-04-08","progress":0},
-          {"task":"設備廠驗FAT及缺失改善","workdays":13,"start":"2026-05-12","end":"2026-05-28","progress":0},
-          {"task":"設備FAT","workdays":1,"start":"2026-05-05","end":"2026-05-05","progress":0},
-          {"task":"設備廠驗缺失改善","workdays":12,"start":"2026-05-06","end":"2026-05-21","progress":0},
-          {"task":"配管","workdays":39,"start":"2026-03-11","end":"2026-05-07","progress":0},
-          {"task":"管材進廠","workdays":5,"start":"2026-03-18","end":"2026-03-24","progress":0},
-          {"task":"管料進場","workdays":1,"start":"2026-03-23","end":"2026-03-23","progress":0},
-          {"task":"管路配管安裝","workdays":8,"start":"2026-03-24","end":"2026-04-02","progress":0},
-          {"task":"管路試壓測漏","workdays":2,"start":"2026-04-07","end":"2026-04-08","progress":0},
-          {"task":"管路清洗","workdays":3,"start":"2026-04-09","end":"2026-04-13","progress":0},
-          {"task":"配電","workdays":33,"start":"2026-04-10","end":"2026-05-27","progress":0},
-          {"task":"電纜架預製","workdays":8,"start":"2026-03-03","end":"2026-03-12","progress":0},
-          {"task":"電料進廠","workdays":1,"start":"2026-03-19","end":"2026-03-19","progress":0},
-          {"task":"電纜架安裝","workdays":3,"start":"2026-03-23","end":"2026-03-25","progress":0},
-          {"task":"電管安裝","workdays":3,"start":"2026-03-23","end":"2026-03-25","progress":0},
-          {"task":"電源動力線佈線","workdays":3,"start":"2026-04-10","end":"2026-04-14","progress":0},
-          {"task":"電源動力線結線","workdays":2,"start":"2026-04-21","end":"2026-04-22","progress":0},
-          {"task":"單元測試","workdays":2,"start":"2026-04-23","end":"2026-04-24","progress":0},
-          {"task":"儀表控制","workdays":2,"start":"2026-04-27","end":"2026-04-28","progress":0},
-          {"task":"Air Tube管配置","workdays":5,"start":"2026-04-29","end":"2026-05-06","progress":0},
-          {"task":"控制訊號線佈線","workdays":3,"start":"2026-05-07","end":"2026-05-11","progress":0},
-          {"task":"控制訊號線結線","workdays":3,"start":"2026-05-12","end":"2026-05-14","progress":0},
-          {"task":"儲藥槽滿水測漏測試","workdays":2,"start":"2026-04-09","end":"2026-04-10","progress":0},
-          {"task":"藥劑管路清水功能測試及測漏","workdays":2,"start":"2026-04-08","end":"2026-04-09","progress":0},
-          {"task":"公用管路保壓測漏測試","workdays":2,"start":"2026-04-21","end":"2026-04-22","progress":0},
-          {"task":"儀表安裝及校正調整","workdays":5,"start":"2026-04-09","end":"2026-04-15","progress":0},
-          {"task":"自動控制整體測試","workdays":7,"start":"2026-04-17","end":"2026-04-27","progress":0},
-          {"task":"自動過濾器 MMF/SF 濾料填裝","workdays":1,"start":"2026-03-30","end":"2026-03-30","progress":0},
-          {"task":"自動過濾器 MMF/SF 清水測試","workdays":3,"start":"2026-04-17","end":"2026-04-21","progress":0},
-          {"task":"RO膜安裝","workdays":2,"start":"2026-04-10","end":"2026-04-13","progress":0},
-          {"task":"RO系統清水功能測試調整","workdays":5,"start":"2026-04-13","end":"2026-04-17","progress":0},
-          {"task":"純水段及管路清洗","workdays":3,"start":"2026-04-02","end":"2026-04-08","progress":0},
-          {"task":"樹脂裝填","workdays":3,"start":"2026-04-02","end":"2026-04-08","progress":0},
-          {"task":"藥劑及濾心耗材填裝","workdays":1,"start":"2026-04-21","end":"2026-04-21","progress":0},
-          {"task":"自動過濾器 MMF/SF廢水功能","workdays":1,"start":"2026-04-21","end":"2026-04-21","progress":0},
-          {"task":"RO(含廢水)系統測試與調整","workdays":1,"start":"2026-04-21","end":"2026-04-21","progress":0},
-          {"task":"RO CIP 藥洗功能測試調整","workdays":3,"start":"2026-04-21","end":"2026-04-23","progress":0},
-          {"task":"全系統自動運轉功能測試調整","workdays":5,"start":"2026-05-04","end":"2026-05-08","progress":0},
-          {"task":"確校相關工作","workdays":14,"start":"2026-05-11","end":"2026-05-28","progress":0},
-          {"task":"設備及管路標示","workdays":5,"start":"2026-05-25","end":"2026-05-29","progress":0},
-          {"task":"相關文件製作及提交","workdays":18,"start":"2026-05-05","end":"2026-05-28","progress":0},
-          {"task":"教育訓練","workdays":2,"start":"2026-05-27","end":"2026-05-28","progress":0}
-        ]
-      }
-    </script>
-
-    <!-- ========== 第一部分：儀表板卡片 KPI ========= -->
+    <!-- ===== 第一排 KPI 卡片 ===== 調整：移除FAT日期、風險無缺失 -->
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
       <div class="dashboard-card p-5 flex items-center gap-4">
-        <div class="bg-[#e1ecf0] p-3 rounded-xl"><i class="fas fa-chart-pie text-[#0b4f6c] text-xl"></i></div>
+        <div class="bg-[#e4edf2] p-3 rounded-xl"><i class="fas fa-chart-pie text-[#0b4f6c] text-xl"></i></div>
         <div>
           <p class="text-xs text-gray-500 uppercase tracking-wider">總進度</p>
           <p class="text-3xl font-bold text-[#0b4f6c]">8<small class="text-sm font-medium text-gray-500 ml-1">%</small></p>
@@ -167,7 +58,7 @@
         </div>
       </div>
       <div class="dashboard-card p-5 flex items-center gap-4">
-        <div class="bg-[#e1ecf0] p-3 rounded-xl"><i class="fas fa-hourglass-half text-[#0b4f6c] text-xl"></i></div>
+        <div class="bg-[#e4edf2] p-3 rounded-xl"><i class="fas fa-hourglass-half text-[#0b4f6c] text-xl"></i></div>
         <div>
           <p class="text-xs text-gray-500 uppercase tracking-wider">剩餘天數</p>
           <p class="text-3xl font-bold text-[#0b4f6c]">105<small class="text-sm font-medium text-gray-500 ml-1">天</small></p>
@@ -175,69 +66,67 @@
         </div>
       </div>
       <div class="dashboard-card p-5 flex items-center gap-4">
-        <div class="bg-[#e1ecf0] p-3 rounded-xl"><i class="fas fa-microchip text-[#0b4f6c] text-xl"></i></div>
+        <div class="bg-[#e4edf2] p-3 rounded-xl"><i class="fas fa-microchip text-[#0b4f6c] text-xl"></i></div>
         <div>
           <p class="text-xs text-gray-500 uppercase tracking-wider">目前階段</p>
           <p class="text-lg font-bold text-[#0b4f6c]">細部設計</p>
-          <span class="text-xs text-gray-500">FAT: 2026-05-05</span>
+          <span class="text-xs text-gray-500">FAT尚未啟動</span> <!-- FAT日期移除 -->
         </div>
       </div>
       <div class="dashboard-card p-5 flex items-center gap-4">
-        <div class="bg-[#e1ecf0] p-3 rounded-xl"><i class="fas fa-clipboard-check text-[#0b4f6c] text-xl"></i></div>
+        <div class="bg-[#e4edf2] p-3 rounded-xl"><i class="fas fa-clipboard-check text-[#0b4f6c] text-xl"></i></div>
         <div>
           <p class="text-xs text-gray-500 uppercase tracking-wider">風險追蹤</p>
-          <p class="text-lg font-bold text-[#0b4f6c]">1 項</p>
-          <span class="text-xs text-red-600 font-medium">FAT缺失待改善</span>
+          <p class="text-lg font-bold text-[#0b4f6c]">0 項</p>
+          <span class="text-xs text-green-600 font-medium">無待辦缺失</span> <!-- 清除FAT缺失字樣 -->
         </div>
       </div>
     </div>
 
-    <!-- ========== 第二部分：規範要求表 (Technical Specs) ========= -->
+    <!-- ===== 【設備規範摘要】移至上方 (原水質規範位置) ===== -->
     <div class="dashboard-card p-5">
-      <div class="flex items-center gap-2 mb-4">
-        <i class="fas fa-table text-[#0b4f6c]"></i>
-        <h2 class="text-md font-semibold text-gray-800 uppercase tracking-wider">水質規範 & 即時驗收狀態</h2>
-        <span class="bg-gray-100 text-gray-600 text-xs px-2 py-0.5 rounded-full">依設備規範書/實測模擬</span>
+      <div class="flex items-center gap-2 mb-3">
+        <i class="fas fa-file-alt text-[#0b4f6c]"></i>
+        <h2 class="text-md font-semibold text-gray-800 uppercase tracking-wider">設備規範摘要 · 10CMH超純水</h2>
+        <span class="bg-gray-100 text-gray-600 text-xs px-2 py-0.5 rounded-full">依規範書/標單</span>
       </div>
-      <div class="overflow-x-auto">
-        <table class="min-w-full text-sm">
-          <thead class="table-header">
-            <tr>
-              <th class="px-3 py-3 text-left">規範項目</th>
-              <th class="px-3 py-3 text-left">單位</th>
-              <th class="px-3 py-3 text-left">要求值</th>
-              <th class="px-3 py-3 text-left">實測值</th>
-              <th class="px-3 py-3 text-left">驗收狀態</th>
-            </tr>
-          </thead>
-          <tbody id="waterSpecTableBody" class="divide-y divide-gray-100 text-gray-700">
-            <!-- 由 JavaScript 動態載入 mock data -->
-          </tbody>
-        </table>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+        <div class="border-l-4 border-[#0b4f6c] pl-3">
+          <p class="font-medium text-gray-800">🔹 RO產水水質</p>
+          <p class="text-gray-600 text-xs">一級RO ≤10µS/cm · 二級RO ≤5µS/cm · UPW ≤0.1µS/cm</p>
+          <p class="font-medium text-gray-800 mt-2">🔹 主要設備廠牌</p>
+          <p class="text-gray-600 text-xs">泵浦: Grundfos / FRP槽: 良機/永固 / RO膜: DOW, HY / 樹脂: Purolite, DOW</p>
+        </div>
+        <div class="border-l-4 border-gray-200 pl-3">
+          <p class="font-medium text-gray-800">🔹 工期與里程碑</p>
+          <p class="text-gray-600 text-xs">訂購後135天 · 設計40天 · 採購43天 · 廠驗FAT: 5/5~5/21</p>
+          <p class="font-medium text-gray-800 mt-2">🔹 循環管路規格</p>
+          <p class="text-gray-600 text-xs">水化線2.5" Clean PVC / 滅菌鍋3" Clean PVC · 流速>1.0m/s</p>
+        </div>
       </div>
-      <p class="text-xs text-gray-400 mt-3 italic">*依據大溪廠10CMH超純水設備規範書 貳、設計資料，模擬FAT水質數據</p>
+      <div class="mt-3 text-xs bg-gray-50 p-2.5 rounded flex flex-wrap gap-1 items-center">
+        <span class="font-medium">附件：</span> PFD、配置圖、循環管路圖（第一版已提交）
+        <span class="bg-[#0b4f6c]/10 text-[#0b4f6c] px-2 py-0.5 rounded-full ml-1 text-[0.7rem]">廠牌表依規範肆</span>
+      </div>
     </div>
 
-    <!-- ========== 第三部分：里程碑甘特圖 (簡約) ========= -->
+    <!-- ===== 里程碑甘特圖 (簡約) ===== -->
     <div class="dashboard-card p-5">
       <div class="flex items-center gap-2 mb-4">
         <i class="fas fa-chart-line text-[#0b4f6c]"></i>
         <h2 class="text-md font-semibold text-gray-800 uppercase tracking-wider">工程里程碑 · 甘特視圖</h2>
-        <span class="bg-gray-100 text-gray-600 text-xs px-2 py-0.5 rounded-full">設計/採購/安裝/FAT</span>
+        <span class="bg-gray-100 text-gray-600 text-xs px-2 py-0.5 rounded-full">六大階段</span>
       </div>
-      <div class="space-y-4" id="ganttContainer">
-        <!-- 動態里程碑條 -->
-      </div>
+      <div class="space-y-4" id="ganttContainer"></div>
     </div>
 
-    <!-- ========== 第四部分：詳細時程表 (完整任務清單) ========= -->
+    <!-- ===== 詳細時程總表 · 三層級任務架構 (完全依使用者提供之階層) ===== -->
     <div class="dashboard-card p-5">
       <div class="flex items-center gap-2 mb-3">
         <i class="fas fa-tasks text-[#0b4f6c]"></i>
-        <h2 class="text-md font-semibold text-gray-800 uppercase tracking-wider">專案時程總表 · 細部作業</h2>
-        <span class="bg-gray-100 text-gray-600 text-xs px-2 py-0.5 rounded-full">2026.02.09 起</span>
+        <h2 class="text-md font-semibold text-gray-800 uppercase tracking-wider">專案時程 · 工作分解結構 (WBS)</h2>
+        <span class="bg-gray-100 text-gray-600 text-xs px-2 py-0.5 rounded-full">設計/採購/安裝/試車</span>
       </div>
-      <!-- 可滾動表格 -->
       <div class="overflow-x-auto max-h-96 border border-gray-100 rounded-lg scrollbar-thin">
         <table class="min-w-full text-xs">
           <thead class="bg-gray-50 sticky top-0">
@@ -250,134 +139,223 @@
               <th class="px-3 py-2 text-left">狀態</th>
             </tr>
           </thead>
-          <tbody id="detailTaskTableBody" class="divide-y divide-gray-100">
-          </tbody>
+          <tbody id="detailTaskTableBody" class="divide-y divide-gray-100"></tbody>
         </table>
       </div>
-      <p class="text-xs text-gray-400 mt-2">* 共計67項作業，依據辰發企業時程規劃表(2026-02-12 更新)</p>
+      <p class="text-xs text-gray-400 mt-2">* 完整三層級WBS，符合辰發企業2/12最新時程版次</p>
     </div>
 
-    <!-- ========== 第五部分：事件紀錄 (Site Diary / 含FAT缺失追蹤) ========= -->
+    <!-- ===== 事件日誌 (Site Diary) · 移除所有FAT相關 ===== -->
     <div class="dashboard-card p-5">
       <div class="flex items-center gap-2 mb-4">
         <i class="fas fa-clipboard-list text-[#0b4f6c]"></i>
         <h2 class="text-md font-semibold text-gray-800 uppercase tracking-wider">事件日誌 · 廠務紀錄</h2>
-        <span class="fat-tag text-white text-xs"><i class="fas fa-exclamation-triangle mr-1"></i> FAT缺失改善追蹤</span>
+        <!-- FAT標籤已隱藏 (class: fat-tag-hidden) -->
+        <span class="fat-tag-hidden"></span>
       </div>
-      <div class="space-y-3" id="eventLogContainer">
-        <!-- 動態事件卡片 -->
-      </div>
+      <div class="space-y-1" id="eventLogContainer"></div>
     </div>
 
-    <!-- ========== 第六部分：設備規範摘要 (附件內容簡潔呈現) ========= -->
-    <div class="dashboard-card p-5 bg-white">
-      <div class="flex items-center gap-2 mb-3">
-        <i class="fas fa-file-alt text-[#0b4f6c]"></i>
-        <h2 class="text-md font-semibold text-gray-800 uppercase tracking-wider">設備規範摘要 · 10CMH超純水</h2>
-        <span class="bg-gray-100 text-gray-600 text-xs px-2 py-0.5 rounded-full">依據標單/規範書</span>
+    <!-- ===== 【水質規範 & 驗收狀態】移至最下方，全部為「未進行」 ===== -->
+    <div class="dashboard-card p-5">
+      <div class="flex items-center gap-2 mb-4">
+        <i class="fas fa-table text-[#0b4f6c]"></i>
+        <h2 class="text-md font-semibold text-gray-800 uppercase tracking-wider">水質規範 · 驗收狀態</h2>
+        <span class="bg-gray-100 text-gray-600 text-xs px-2 py-0.5 rounded-full">尚未試車 · 全數未進行</span>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-        <div class="border-l-4 border-[#0b4f6c] pl-3">
-          <p class="font-medium text-gray-800">🔹 RO產水水質</p>
-          <p class="text-gray-600 text-xs">一級RO ≤10µS/cm · 二級RO ≤5µS/cm · UPW ≤0.1µS/cm</p>
-          <p class="font-medium text-gray-800 mt-2">🔹 主要設備廠牌 (依規範)</p>
-          <p class="text-gray-600 text-xs">泵浦: Grundfos / FRP槽: 良機/永固 / RO膜: DOW / HYD / 樹脂: Purolite / DOW</p>
-        </div>
-        <div class="border-l-4 border-gray-200 pl-3">
-          <p class="font-medium text-gray-800">🔹 工期與里程碑</p>
-          <p class="text-gray-600 text-xs">訂購後135天 · 設計40天 · 採購43天 · FAT: 5/5~5/21 · 試車5/27</p>
-          <p class="font-medium text-gray-800 mt-2">🔹 循環管路規格</p>
-          <p class="text-gray-600 text-xs">水化線2.5" Clean PVC / 滅菌鍋3" Clean PVC · 流速>1.0m/s · 3D死角</p>
-        </div>
+      <div class="overflow-x-auto">
+        <table class="min-w-full text-sm">
+          <thead class="table-header">
+            <tr>
+              <th class="px-3 py-3 text-left">規範項目</th>
+              <th class="px-3 py-3 text-left">單位</th>
+              <th class="px-3 py-3 text-left">要求值</th>
+              <th class="px-3 py-3 text-left">實測值</th>
+              <th class="px-3 py-3 text-left">驗收狀態</th>
+            </tr>
+          </thead>
+          <tbody id="waterSpecTableBody" class="divide-y divide-gray-100"></tbody>
+        </table>
       </div>
-      <div class="mt-3 text-xs bg-gray-50 p-2 rounded flex flex-wrap gap-2">
-        <span class="font-medium">附件一：</span> PFD、配置圖、循環管路圖已完成第一版提送；<span class="font-medium">廠牌表</span>依規範書肆。
-        <span class="bg-[#0b4f6c]/10 px-2 py-0.5 rounded-full text-[#0b4f6c] ml-2">一期共用原則</span>
-      </div>
+      <p class="text-xs text-gray-400 mt-3 italic">* 依據大溪廠10CMH超純水設備規範書，FAT/IQ/OQ階段尚未執行，全數標示「未進行」</p>
     </div>
 
-    <!-- 簡單footer -->
+    <!-- footer -->
     <div class="text-center text-xs text-gray-400 py-4 border-t border-gray-200">
-      辰發企業股份有限公司 · 大溪二期純水專案 · 資料更新 2026-02-12 · 基於設備規範書及標單製作
+      辰發企業 · 晶碩大溪二期純水專案 · 資料更新 2026-02-12 · 本儀表板符合極簡主義/專業灰藍基調
     </div>
   </div>
 
+  <!-- ========== 重新建構的 Mock Data，完全符合使用者需求 ========= -->
+  <script id="mockProjectData" type="application/json">
+    {
+      "projectName": "晶碩大溪10CMH純水二期",
+      "dashboard": { "totalProgress": 8, "remainingDays": 105, "currentPhase": "細部設計" },
+      "waterSpecs": [
+        { "parameter": "導電度 (一級RO產水)", "unit": "µS/cm", "requirement": "≤ 10", "actual": "—", "status": "PENDING" },
+        { "parameter": "導電度 (二級RO產水)", "unit": "µS/cm", "requirement": "≤ 5", "actual": "—", "status": "PENDING" },
+        { "parameter": "導電度 (拋光樹脂出口)", "unit": "µS/cm", "requirement": "≤ 0.1", "actual": "—", "status": "PENDING" },
+        { "parameter": "TSS (二級RO)", "unit": "ppm", "requirement": "≤ 0.5", "actual": "—", "status": "PENDING" },
+        { "parameter": "TSS (UPW)", "unit": "ppm", "requirement": "≤ 0.1", "actual": "—", "status": "PENDING" },
+        { "parameter": "pH (一級RO)", "unit": "-", "requirement": "6.0-8.0", "actual": "—", "status": "PENDING" },
+        { "parameter": "pH (UPW)", "unit": "-", "requirement": "6.5-7.5", "actual": "—", "status": "PENDING" },
+        { "parameter": "TOC (UPW)", "unit": "ppb", "requirement": "< 50", "actual": "—", "status": "PENDING" },
+        { "parameter": "濁度 (原水)", "unit": "NTU", "requirement": "< 5", "actual": "—", "status": "PENDING" },
+        { "parameter": "殘留氯 (活性碳後)", "unit": "ppm", "requirement": "< 0.1", "actual": "—", "status": "PENDING" }
+      ],
+      "milestones": [
+        { "name": "設計階段", "start": "2026-02-09", "end": "2026-04-15", "progress": 15 },
+        { "name": "採購與預製", "start": "2026-02-09", "end": "2026-04-24", "progress": 8 },
+        { "name": "盤體組裝/Skid", "start": "2026-03-09", "end": "2026-04-20", "progress": 0 },
+        { "name": "FAT 廠驗", "start": "2026-05-05", "end": "2026-05-21", "progress": 0 },
+        { "name": "現場安裝/配管", "start": "2026-03-11", "end": "2026-05-07", "progress": 2 },
+        { "name": "試車/確校", "start": "2026-04-17", "end": "2026-05-28", "progress": 0 }
+      ],
+      "eventLogs": [
+        { "date": "2026-02-04", "category": "投標", "description": "10CMH純水系統二期投標文件提交", "progress": "完成" },
+        { "date": "2026-02-06", "category": "得標", "description": "辰發企業正式得標通知", "progress": "完成" },
+        { "date": "2026-02-09", "category": "會議紀錄", "description": "內部專案啟動會議，核定WBS與負責人", "progress": "完成" },
+        { "date": "2026-02-10", "category": "設計變更", "description": "提交第一版平面配置圖，業主反饋調整管架", "progress": "進行中" },
+        { "date": "2026-02-11", "category": "廠勘", "description": "現場會勘，確認基座位置及圍堰範圍", "progress": "完成" }
+      ],
+      "detailTasks": [
+        {"task":"細部設計規畫及圖面製作","workdays":40,"start":"2026-02-09","end":"2026-04-15","progress":5,"level":0},
+        {"task":"PID圖製作","workdays":3,"start":"2026-02-09","end":"2026-02-11","progress":100,"level":1},
+        {"task":"配置圖製作","workdays":18,"start":"2026-02-09","end":"2026-03-12","progress":15,"level":1},
+        {"task":"設備清單製作","workdays":18,"start":"2026-02-09","end":"2026-03-12","progress":15,"level":1},
+        {"task":"儀表清單製作","workdays":18,"start":"2026-02-09","end":"2026-03-12","progress":15,"level":1},
+        {"task":"閥件清單製作","workdays":18,"start":"2026-02-09","end":"2026-03-12","progress":15,"level":1},
+        {"task":"管線清單製作","workdays":18,"start":"2026-02-09","end":"2026-03-12","progress":15,"level":1},
+        {"task":"I/O List製作","workdays":28,"start":"2026-02-09","end":"2026-03-26","progress":8,"level":1},
+        {"task":"設備型錄及製作詳圖","workdays":28,"start":"2026-02-09","end":"2026-03-26","progress":8,"level":1},
+        {"task":"儀表型錄圖面","workdays":18,"start":"2026-02-09","end":"2026-03-12","progress":15,"level":1},
+        {"task":"閥件型錄圖面","workdays":18,"start":"2026-02-09","end":"2026-03-12","progress":15,"level":1},
+        {"task":"配管及另料型錄圖面","workdays":18,"start":"2026-02-09","end":"2026-03-12","progress":15,"level":1},
+        {"task":"盤櫃圖製作","workdays":25,"start":"2026-02-09","end":"2026-03-23","progress":10,"level":1},
+        {"task":"電路圖製作(含配線圖)","workdays":25,"start":"2026-02-09","end":"2026-03-23","progress":10,"level":1},
+        {"task":"控制邏輯圖製作(含I/O List)","workdays":22,"start":"2026-03-04","end":"2026-04-02","progress":0,"level":1},
+        {"task":"HMI人機畫面製作","workdays":27,"start":"2026-03-06","end":"2026-04-15","progress":0,"level":1},
+        {"task":"設備採購及組裝預製","workdays":43,"start":"2026-02-09","end":"2026-04-20","progress":3,"level":0},
+        {"task":"定位點及基座、防溢工程","workdays":8,"start":"2026-03-04","end":"2026-03-13","progress":0,"level":1},
+        {"task":"泵浦採購","workdays":3,"start":"2026-02-09","end":"2026-02-11","progress":100,"level":1},
+        {"task":"泵浦Skid組立預製","workdays":7,"start":"2026-02-09","end":"2026-02-24","progress":30,"level":1},
+        {"task":"RO (含外管)及SKID採購及製作","workdays":23,"start":"2026-03-09","end":"2026-04-10","progress":0,"level":1},
+        {"task":"FRP桶槽製作","workdays":40,"start":"2026-02-13","end":"2026-04-21","progress":2,"level":1},
+        {"task":"FRP桶槽製作 (2)","workdays":40,"start":"2026-02-13","end":"2026-04-21","progress":2,"level":1},
+        {"task":"UV採購及派送","workdays":47,"start":"2026-02-09","end":"2026-04-24","progress":2,"level":1},
+        {"task":"濾料採購及相關準備","workdays":37,"start":"2026-02-12","end":"2026-04-15","progress":1,"level":0},
+        {"task":"儀表及管材採購","workdays":16,"start":"2026-03-16","end":"2026-04-08","progress":0,"level":1},
+        {"task":"設備廠驗FAT及缺失改善","workdays":13,"start":"2026-05-12","end":"2026-05-28","progress":0,"level":0},
+        {"task":"設備FAT","workdays":1,"start":"2026-05-05","end":"2026-05-05","progress":0,"level":1},
+        {"task":"設備廠驗缺失改善","workdays":12,"start":"2026-05-06","end":"2026-05-21","progress":0,"level":1},
+        {"task":"配管","workdays":39,"start":"2026-03-11","end":"2026-05-07","progress":0,"level":0},
+        {"task":"管材進廠","workdays":5,"start":"2026-03-18","end":"2026-03-24","progress":0,"level":1},
+        {"task":"管料進場","workdays":1,"start":"2026-03-23","end":"2026-03-23","progress":0,"level":1},
+        {"task":"管路配管安裝","workdays":8,"start":"2026-03-24","end":"2026-04-02","progress":0,"level":1},
+        {"task":"管路試壓測漏","workdays":2,"start":"2026-04-07","end":"2026-04-08","progress":0,"level":1},
+        {"task":"管路清洗","workdays":3,"start":"2026-04-09","end":"2026-04-13","progress":0,"level":1},
+        {"task":"管路保溫 (無則免)","workdays":0,"start":"2026-02-09","end":"2026-02-09","progress":0,"level":1},
+        {"task":"配電","workdays":33,"start":"2026-04-10","end":"2026-05-27","progress":0,"level":0},
+        {"task":"電纜架預製","workdays":8,"start":"2026-03-03","end":"2026-03-12","progress":0,"level":1},
+        {"task":"電料進廠","workdays":1,"start":"2026-03-19","end":"2026-03-19","progress":0,"level":1},
+        {"task":"電纜架安裝","workdays":3,"start":"2026-03-23","end":"2026-03-25","progress":0,"level":1},
+        {"task":"電管安裝","workdays":3,"start":"2026-03-23","end":"2026-03-25","progress":0,"level":1},
+        {"task":"電源動力線佈線","workdays":3,"start":"2026-04-10","end":"2026-04-14","progress":0,"level":1},
+        {"task":"電源動力線結線","workdays":2,"start":"2026-04-21","end":"2026-04-22","progress":0,"level":1},
+        {"task":"單元測試 I","workdays":2,"start":"2026-04-23","end":"2026-04-24","progress":0,"level":0},
+        {"task":"儀表控制","workdays":2,"start":"2026-04-27","end":"2026-04-28","progress":0,"level":1},
+        {"task":"Air Tube管配置","workdays":5,"start":"2026-04-29","end":"2026-05-06","progress":0,"level":1},
+        {"task":"控制訊號線佈線","workdays":3,"start":"2026-05-07","end":"2026-05-11","progress":0,"level":1},
+        {"task":"控制訊號線結線","workdays":3,"start":"2026-05-12","end":"2026-05-14","progress":0,"level":1},
+        {"task":"單元測試 II","workdays":0,"start":"2026-04-08","end":"2026-04-10","progress":0,"level":0},
+        {"task":"儲藥槽滿水測漏測試","workdays":2,"start":"2026-04-09","end":"2026-04-10","progress":0,"level":1},
+        {"task":"藥劑管路清水功能測試及測漏","workdays":2,"start":"2026-04-08","end":"2026-04-09","progress":0,"level":1},
+        {"task":"公用管路保壓測漏測試","workdays":2,"start":"2026-04-21","end":"2026-04-22","progress":0,"level":1},
+        {"task":"儀表安裝及校正調整","workdays":5,"start":"2026-04-09","end":"2026-04-15","progress":0,"level":1},
+        {"task":"自動控制整體測試","workdays":7,"start":"2026-04-17","end":"2026-04-27","progress":0,"level":0},
+        {"task":"自動過濾器 MMF/SF 濾料填裝","workdays":1,"start":"2026-03-30","end":"2026-03-30","progress":0,"level":1},
+        {"task":"自動過濾器 MMF/SF 清水測試","workdays":3,"start":"2026-04-17","end":"2026-04-21","progress":0,"level":1},
+        {"task":"RO膜安裝","workdays":2,"start":"2026-04-10","end":"2026-04-13","progress":0,"level":1},
+        {"task":"RO系統清水功能測試調整","workdays":5,"start":"2026-04-13","end":"2026-04-17","progress":0,"level":1},
+        {"task":"純水段及管路清洗","workdays":3,"start":"2026-04-02","end":"2026-04-08","progress":0,"level":1},
+        {"task":"樹脂裝填","workdays":3,"start":"2026-04-02","end":"2026-04-08","progress":0,"level":1},
+        {"task":"藥劑及濾心耗材填裝","workdays":1,"start":"2026-04-21","end":"2026-04-21","progress":0,"level":1},
+        {"task":"自動過濾器 MMF/SF廢水功能","workdays":1,"start":"2026-04-21","end":"2026-04-21","progress":0,"level":1},
+        {"task":"RO(含廢水)系統測試與調整","workdays":1,"start":"2026-04-21","end":"2026-04-21","progress":0,"level":1},
+        {"task":"RO CIP 藥洗功能測試調整","workdays":3,"start":"2026-04-21","end":"2026-04-23","progress":0,"level":1},
+        {"task":"全系統自動運轉功能測試調整","workdays":5,"start":"2026-05-04","end":"2026-05-08","progress":0,"level":0},
+        {"task":"確校相關工作","workdays":14,"start":"2026-05-11","end":"2026-05-28","progress":0,"level":0},
+        {"task":"設備及管路標示","workdays":5,"start":"2026-05-25","end":"2026-05-29","progress":0,"level":0},
+        {"task":"相關文件製作及提交","workdays":18,"start":"2026-05-05","end":"2026-05-28","progress":0,"level":0},
+        {"task":"教育訓練","workdays":2,"start":"2026-05-27","end":"2026-05-28","progress":0,"level":0}
+      ]
+    }
+  </script>
+
   <script>
     (function() {
-      // 讀取Mock JSON Data (從script標籤)
       const mockData = JSON.parse(document.getElementById('mockProjectData').innerHTML);
 
-      // ---------- 1. 水質規範表格 ----------
+      // ----- 1. 水質規範表格 (全數未進行) -----
       const specBody = document.getElementById('waterSpecTableBody');
       if (specBody) {
         mockData.waterSpecs.forEach(item => {
-          let statusClass = 'status-pending';
-          let statusText = 'Pending';
-          if (item.status === 'PASS') { statusClass = 'status-pass'; statusText = 'Pass'; }
-          else if (item.status === 'FAIL') { statusClass = 'status-fail'; statusText = 'Fail'; }
           const row = `<tr>
             <td class="px-3 py-2.5 font-medium">${item.parameter}</td>
             <td class="px-3 py-2.5">${item.unit || ''}</td>
             <td class="px-3 py-2.5">${item.requirement}</td>
-            <td class="px-3 py-2.5">${item.actual}</td>
-            <td class="px-3 py-2.5"><span class="${statusClass}">${statusText}</span></td>
+            <td class="px-3 py-2.5 text-gray-400">${item.actual}</td>
+            <td class="px-3 py-2.5"><span class="status-pending">未進行</span></td>
           </tr>`;
           specBody.innerHTML += row;
         });
       }
 
-      // ---------- 2. 甘特圖里程碑 ----------
+      // ----- 2. 甘特圖 -----
       const ganttContainer = document.getElementById('ganttContainer');
       if (ganttContainer) {
-        // 總時程範圍: 2/9 ~ 5/28 (近似)
         const projectStart = new Date('2026-02-09');
         const projectEnd = new Date('2026-05-28');
         const totalDays = (projectEnd - projectStart) / (1000 * 3600 * 24);
-        
         mockData.milestones.forEach(m => {
           const startDate = new Date(m.start);
           const endDate = new Date(m.end);
-          // 計算左偏移與寬度百分比 (簡約視覺)
           let leftPercent = Math.max(0, ((startDate - projectStart) / (1000*3600*24)) / totalDays * 100);
           let widthPercent = Math.min(100 - leftPercent, ((endDate - startDate) / (1000*3600*24)) / totalDays * 100);
-          if (widthPercent < 2) widthPercent = 2; // 至少可見
-          
+          if (widthPercent < 2) widthPercent = 2;
           const milestoneHtml = `
-            <div class="timeline-grid">
+            <div class="milestone-grid">
               <div class="text-xs font-medium text-gray-700">${m.name}</div>
               <div>
-                <div class="gantt-bar w-full">
-                  <div class="gantt-progress" style="width: ${m.progress}%; margin-left: ${leftPercent}%; width: ${widthPercent}%;"></div>
-                </div>
-                <div class="flex justify-between text-[0.65rem] text-gray-500 mt-1">
-                  <span>${m.start}</span>
-                  <span>${m.end}</span>
-                  <span>進度 ${m.progress}%</span>
-                </div>
+                <div class="gantt-bar w-full"><div class="gantt-progress" style="width: ${m.progress}%; margin-left: ${leftPercent}%; width: ${widthPercent}%;"></div></div>
+                <div class="flex justify-between text-[0.63rem] text-gray-500 mt-1"><span>${m.start}</span><span>${m.end}</span><span>進度 ${m.progress}%</span></div>
               </div>
-            </div>
-          `;
+            </div>`;
           ganttContainer.innerHTML += milestoneHtml;
         });
       }
 
-      // ---------- 3. 詳細時程表 (67項) ----------
+      // ----- 3. 時程表 (三層級) 依level縮排 -----
       const taskBody = document.getElementById('detailTaskTableBody');
       if (taskBody) {
         mockData.detailTasks.forEach(task => {
+          let levelClass = 'level-0';
+          if (task.level === 1) levelClass = 'level-1';
+          else if (task.level === 2) levelClass = 'level-2';
+          
           let statusLabel = '';
-          if (task.progress >= 100) statusLabel = '<span class="status-pass text-[0.65rem]">完成</span>';
-          else if (task.progress > 0) statusLabel = '<span class="status-pending text-[0.65rem]">進行中</span>';
+          if (task.progress >= 100) statusLabel = '<span class="bg-green-100 text-green-700 px-2 py-0.5 rounded-full text-[0.65rem] font-medium">完成</span>';
+          else if (task.progress > 0) statusLabel = '<span class="bg-amber-50 text-amber-600 px-2 py-0.5 rounded-full text-[0.65rem] border border-amber-200">進行中</span>';
           else statusLabel = '<span class="bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full text-[0.65rem]">未啟動</span>';
           
-          const row = `<tr class="hover:bg-gray-50">
+          const row = `<tr class="${levelClass} hover:bg-gray-50/80">
             <td class="px-3 py-2 text-gray-800">${task.task}</td>
             <td class="px-3 py-2">${task.workdays}</td>
             <td class="px-3 py-2">${task.start}</td>
             <td class="px-3 py-2">${task.end}</td>
             <td class="px-3 py-2">
               <div class="flex items-center gap-1.5">
-                <span class="text-xs font-medium">${task.progress}%</span>
+                <span class="text-xs font-medium w-7">${task.progress}%</span>
                 <div class="w-12 bg-gray-200 rounded-full h-1.5"><div class="bg-[#0b4f6c] h-1.5 rounded-full" style="width: ${task.progress}%;"></div></div>
               </div>
             </td>
@@ -387,25 +365,23 @@
         });
       }
 
-      // ---------- 4. 事件日誌 (含FAT改善標註)--------
+      // ----- 4. 事件日誌 (已移除FAT項目及標籤) -----
       const eventLog = document.getElementById('eventLogContainer');
       if (eventLog) {
         mockData.eventLogs.forEach(ev => {
           let catClass = 'bg-gray-100 text-gray-700';
-          if (ev.category.includes('FAT') || ev.description.includes('FAT')) catClass = 'bg-[#0b4f6c] text-white text-xs'; // fat標籤深藍
-          let progressColor = ev.progress === '完成' ? 'text-green-600' : 'text-amber-600';
-          
-          const isFat = ev.category.includes('FAT') || ev.description.includes('FAT') ? true : false;
-          const fatBadge = isFat ? '<span class="ml-2 fat-tag text-[0.6rem]">FAT追蹤</span>' : '';
+          if (ev.category.includes('會議')) catClass = 'bg-blue-50 text-blue-700';
+          else if (ev.category.includes('得標')) catClass = 'bg-[#0b4f6c] text-white';
+          else if (ev.category.includes('投標')) catClass = 'bg-gray-200 text-gray-800';
           
           const card = `
-            <div class="flex flex-col md:flex-row md:items-center p-3 border-b border-gray-100 ${isFat ? 'event-log-highlight' : ''}">
+            <div class="flex flex-col md:flex-row md:items-center p-3 border-b border-gray-100">
               <div class="flex items-start gap-3 w-full">
                 <span class="text-sm font-mono text-gray-400 min-w-[90px]">${ev.date}</span>
                 <span class="px-2 py-0.5 rounded-full text-xs font-medium ${catClass}">${ev.category}</span>
                 <div class="flex-1">
-                  <p class="text-sm text-gray-800">${ev.description} ${fatBadge}</p>
-                  <p class="text-xs text-gray-500 mt-0.5">處理進度：<span class="${progressColor} font-medium">${ev.progress}</span></p>
+                  <p class="text-sm text-gray-800">${ev.description}</p>
+                  <p class="text-xs text-gray-500 mt-0.5">處理進度：<span class="${ev.progress === '完成' ? 'text-green-600' : 'text-amber-600'} font-medium">${ev.progress}</span></p>
                 </div>
               </div>
             </div>
@@ -413,17 +389,18 @@
           eventLog.innerHTML += card;
         });
       }
-
-      // 儀表板數值也從mock抓 (但已經寫死，可手動同步)
-      // 若需要完全從mock可以再更動，此處為視覺一致性手動調整成8%,105天符合mock
     })();
   </script>
-  <!-- 確保表格滑動順暢，增加scrollbar風格 (可選) -->
+
+  <!-- 自定義滾軸樣式 -->
   <style>
     .scrollbar-thin::-webkit-scrollbar { width: 4px; height: 4px; }
-    .scrollbar-thin::-webkit-scrollbar-thumb { background: #cbd5e0; border-radius: 8px; }
-    .dashboard-card { transition: all 0.05s ease; }
-    .gantt-bar { background: #e2e8f0; }
+    .scrollbar-thin::-webkit-scrollbar-thumb { background: #bcc9d3; border-radius: 8px; }
+    .level-1 td:first-child { padding-left: 2rem; }
+    .level-2 td:first-child { padding-left: 4rem; font-size: 0.75rem; color: #3a5463; }
+    .level-0 td:first-child { font-weight: 600; background-color: #f8fbfe; }
+    .dashboard-card { transition: none; }
+    .fat-tag-hidden { display: none; }
   </style>
 </body>
 </html>
